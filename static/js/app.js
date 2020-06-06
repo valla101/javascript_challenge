@@ -15,6 +15,8 @@ button.on("click", runEnter);
 form.on("submit",runEnter);
 
 // Define the forEach function that'll loop through every object in the array "tableData"
+// This will display all table records whenever you load the homepage.
+
 tableData.forEach(function(record){
     // make a new table row for each object that appears in the table
     var table_row = tbody.append("tr");
@@ -59,10 +61,6 @@ tableData.forEach(function(record){
 //     });
 // };
 
-// This funciton filters data by City (user input)
-// "cityfilter" 
-
-// approach
 function runEnter() {
 
     // Prevent the page from refreshing
@@ -73,6 +71,17 @@ function runEnter() {
     // selecting the input value for city
     var cityInputElement = d3.select("#cityfilter");
     var cityInputValue = cityInputElement.property("value");
+    // selecting the input value for the state
+    var stateInputElement = d3.select("#statefilter");
+    var stateInputValue = stateInputElement.property("value");
+
+    // selecting the input value for the country
+    var countryInputElement = d3.select("#countryfilter");
+    var countryInputValue = countryInputElement.property("value");
+
+    var shapeInputElement = d3.select("#shapefilter");
+    var shapeInputValue = shapeInputElement.property("value");
+
 
     // Filters the tableData and prints the filtered data records on console log. the table itself doesn't change yet
     var filtered_sighting = tableData.filter(record => record.datetime === inputValue);
@@ -81,6 +90,16 @@ function runEnter() {
     // Filters the tableData by city. The user must input a city in the input field for this to work. the table itself doesn't change yet
     var city_filtered_sighting = tableData.filter(record => record.city === cityInputValue);
     console.log(city_filtered_sighting);
+
+    // Filters the tableData by state. The user must input a state abbreviation in the input field for this to work. the table itself doesn't change yet
+    var state_filtered_sighting = tableData.filter(record => record.state === stateInputValue);
+    console.log(state_filtered_sighting);
+
+    var country_filtered_sighting = tableData.filter(record => record.country === countryInputValue);
+    console.log(country_filtered_sighting)
+
+    var shape_filtered_sighting = tableData.filter(record => record.shape === shapeInputValue);
+    console.log(shape_filtered_sighting)
 
     // // This will empty the table, to enable you to insert the filtered sightings into the tbody.
     tbody.html("");
@@ -110,4 +129,36 @@ function runEnter() {
             table_cell.text(value);
         });
     });
+
+    // Appending table data based on state filter
+
+    state_filtered_sighting.forEach(function(record) {
+        // create table row for each record inside tbody
+        // create table cells for each array (object entries)
+        // append text to each td
+        var table_row = tbody.append("tr");
+        Object.entries(record).forEach(function([key, value]){
+            var table_cell = table_row.append("td");
+            table_cell.text(value);
+        });
+    });
+
+    // Appending table data based on country filter
+    country_filtered_sighting.forEach(function(record) {
+        var table_row = tbody.append("tr");
+        Object.entries(record).forEach(function([key,value]){
+            var table_cell = table_row.append("td");
+            table_cell.text(value);
+        });
+    });
+
+    // Appending table data based on shape filter
+    shape_filtered_sighting.forEach(function(record) {
+        var table_row = tbody.append("tr");
+        Object.entries(record).forEach(function([key,value]){
+            var table_cell = table_row.append("td");
+            table_cell.text(value);
+        });
+    });
+
 };
